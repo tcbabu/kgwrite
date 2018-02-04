@@ -1,0 +1,2 @@
+#ffmpeg -f alsa -ac 1 -i hw:1 -f video4linux2 -i /dev/video0 $1
+ffmpeg  -f oss -i /dev/dsp  -f video4linux2 -i /dev/video0 $1

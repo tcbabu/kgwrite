@@ -1,0 +1,2 @@
+#ffmpeg -f image2 -framerate 12 -i foo-%03d.jpeg -s WxH foo.avi
+kgffmpeg -f image2 -framerate 30 -i Frame%04d.png -f mp4 -vcodec libx264 -b:v 3000K   foo.mp4
