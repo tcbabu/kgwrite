@@ -6,18 +6,20 @@ ADD lib.tar.xz /
 #which can be found out by running 'ldd kgwrite'
 #only libraries not available in ubuntu are included
 #docker will untar an .xz tab ball
-VOLUME ["/home"]
+#VOLUME ["/home"]
 #telling that /home is a mount point, used to mount /home
 #of host to mount on 'home' in the new environment
 #used to make host files available at runtime to read and write
-RUN groupadd -g 1001 babu;useradd -g 1001 -u 1000 babu;
+RUN groupadd -g 1001 babu;useradd -g 1001 -u 1000 -b /home -m babu;
 #adding a user and group so newly created files will be
 #is with user:gruop
 ADD kgwrite /
 #adding kgwrite
 #ADD authorized_keys /
-#ADD scp /usr/bin/
-#ADD ssh /usr/bin/
+ADD scp /usr/bin/
+ADD ssh /usr/bin/
+ADD git /usr/bin/
+ADD authorized_keys /
 RUN ldconfig ; 
 #running ldconfig in 'root' mode itself to update the included libraries
 WORKDIR /home/babu
@@ -25,5 +27,7 @@ WORKDIR /home/babu
 #written relative to this
 USER babu:babu
 #changing to user and group so that file ownership is okay
-CMD ["/kgwrite","-fReadme.ps","Readme"]
+RUN rm -rf data;mkdir .ssh;cp /authorized_keys .ssh/;
+RUN git clone ssh:babu@127.0.0.1:BUILD/kgwrite data
+CMD ["/kgwrite","-fReadme.ps","data/Readme"]
 #actual command to run
