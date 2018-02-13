@@ -1,0 +1,45 @@
+About connecting through ssh/scp.
+
+To ssh/scp in batch mode (ie without passwd prompt), following
+steps are required.
+
+1. .ssh directory in $(HOME). It should not have write permission
+for others. ie it must be chmod 755
+ 
+ie cd ~
+   mkdir .ssh
+   chmod 755 .ssh
+Now under .ssh, run
+
+   ssh-keygen -t rsa
+   it will prompt for passpraice, which can be empty, otherwise
+   it wiil be prompted for at use also.
+
+   it will create two files
+   1. id_rsa  which is private key and should not be shared with others,
+      other than extra ordinary situations. Only the ower should
+      have permissions on this.
+      ie it must be 'chmod 600 id_rsa'.
+  2. id_rsa.pub the public key which can be shared with others
+     but must have  only read permissions to others.
+     ie 'chmod 644 id_rsa.pub'
+
+  The third file of importance is 'authorized_keys' which also must
+  only have read permissions for others.
+  ie 'chmod 644 authorized_keys'. This file is a collection of
+  public keys of others who are allowed to login to this machine.
+  One can certainly add own public key to this file so it is possible to
+  ssh own machine/account.
+  ie 'cat id_rsa.pub >> authorized_keys'.
+  One can do this for public keys of others/machines like this.
+  Always remember about the 'chmod'.
+
+  Forth file is known_hosts. Initially one can just touch it.
+  It must also be ' touch known_hosts;chmod 644 known_hosts'.
+  'known_hosts' will get build up on making ssh to other 
+  user/machine.
+
+  The file authorized_keys can be installed in other user-accounts/
+  machines.
+
+  Permissions of these files should be as mentioned.
