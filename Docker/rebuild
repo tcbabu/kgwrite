@@ -1,0 +1,2 @@
+#docker build --no-cache --rm --tag kgwrite:latest .
+docker build  --tag kgwrite:latest .
