@@ -1,0 +1,19 @@
+mkdir -p /home/babu/.ssh
+chmod 700 /home/babu/.ssh
+cp /authorized_keys /home/babu/.ssh/
+chmod 644 /home/babu/.ssh/authorized_keys
+mkdir data
+route
+#hostname hplaptop
+hostname
+#git clone babu@192.168.1.115:BUILD/kgwrite data
+scp -o RSAAuthentication=yes -o StrictHostKeyChecking=no -o \
+BatchMode=yes -o HostbasedAuthentication=yes babu@192.168.1.4:BUILD/kgwrite/Readme data/
+cd data
+/kgwrite -fReadme.ps Readme
+scp -o RSAAuthentication=yes -o StrictHostKeyChecking=no -o \
+BatchMode=yes -o HostbasedAuthentication=yes Readme.ps babu@192.168.1.4:BUILD/kgwrite/
+#git add Readme.ps
+#git commit -a
+#git remote add orgdata babu@localhost:BUILD/kgwrite
+#git push  master orgdata
