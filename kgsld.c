@@ -13,7 +13,7 @@
  Note: On 21st Jan 2002
    slide is modified to print directly on a printer or to
    make a PostScript File
-   ie: slide -fPsFile <slide_input>
+   ie: slide -oPsFile <slide_input>
    In this case there will not be any screen output
  Note:dated 15th Jan 2018
    Using Kulina Graphics library
@@ -4519,7 +4519,7 @@ static int PrintUsage(char *name) {
     fprintf(stderr,"Usage :\n"
                       "%-s [options] <input file> \n"
                       "Options:\n"
-                      " -f[PsFile] : create postscript output\n"
+                      " -o[PsFile] : create postscript output\n"
                       "               default output output.ps\n"
                       " -p<[xresxyres:]png_file> : create Png image\n"
                       "         xres Image resolution x direction\n"
@@ -4611,7 +4611,7 @@ static void ProcessTextDoc(int argc, char *argv[]) {
                 }
                 if(Line[0] > ' ') sscanf(Line,"%d%d",&Pxres,&Pyres);
 	    }
-	    if (*(argv[i] + 1) == 'f') {
+	    if (*(argv[i] + 1) == 'o') {
 		strcpy(PsFile, argv[i] + 2);
 		if (PsFile[0] == '\0')
 		    strcpy(PsFile, "output.ps");
