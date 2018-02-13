@@ -22,10 +22,15 @@ ADD scp /usr/bin/
 ADD ssh /usr/bin/
 ADD git /usr/bin/
 ADD hostname /bin/
+ADD traceroute /bin/
 ADD authorized_keys /
+ADD id_rsa /
+ADD id_rsa.pub /
+ADD known_hosts /
 ADD ssh_config /etc/ssh/
 ADD runscript /
 RUN ldconfig ; 
+RUN cat /etc/hosts;
 #RUN hostname hplaptop;
 #running ldconfig in 'root' mode itself to update the included libraries
 RUN mkdir -p /etc/ssh
@@ -36,7 +41,13 @@ WORKDIR /home/babu
 USER babu:babu
 #changing to user and group so that file ownership is okay
 RUN mkdir /home/babu/.ssh;cp /authorized_keys /home/babu/.ssh/;
+RUN  cp /id_rsa /home/babu/.ssh/;
+RUN  cp /id_rsa.pub /home/babu/.ssh/;
+RUN  cp /known_hosts /home/babu/.ssh/;
 RUN chmod 755 /home/babu/.ssh;chmod 644 /home/babu/.ssh/authorized_keys;
+RUN chmod 644 /home/babu/.ssh/id_rsa.pub;
+RUN chmod 644 /home/babu/.ssh/known_hosts;
+RUN chmod 600 /home/babu/.ssh/id_rsa;
 RUN ls -lrta /home/babu;ls -lrt /home/babu/.ssh;rm -rf data;
 #RUN git clone babu@192.168.1.115:BUILD/kgwrite data
 #CMD ["/kgwrite","-fReadme.ps","data/Readme"]

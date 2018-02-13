@@ -2,18 +2,22 @@ mkdir -p /home/babu/.ssh
 chmod 700 /home/babu/.ssh
 cp /authorized_keys /home/babu/.ssh/
 chmod 644 /home/babu/.ssh/authorized_keys
-mkdir data
+mkdir /home/babu/data
 route
 #hostname hplaptop
 hostname
-#git clone babu@192.168.1.115:BUILD/kgwrite data
-scp -o RSAAuthentication=yes -o StrictHostKeyChecking=no -o \
-BatchMode=yes -o HostbasedAuthentication=yes babu@192.168.1.4:BUILD/kgwrite/Readme data/
-cd data
-/kgwrite -fReadme.ps Readme
-scp -o RSAAuthentication=yes -o StrictHostKeyChecking=no -o \
-BatchMode=yes -o HostbasedAuthentication=yes Readme.ps babu@192.168.1.4:BUILD/kgwrite/
+traceroute github.com
+git clone git@github.com:tcbabu/data.git data
+#scp  babu@github.com:BUILD/kgwrite/Readme data/
+cd /home/babu/data
+ls -rtl ./
+#/kgwrite 
+/kgwrite -oReadme.ps Readme
+#scp  Readme.ps babu@github.com:BUILD/kgwrite/
 #git add Readme.ps
-#git commit -a
-#git remote add orgdata babu@localhost:BUILD/kgwrite
-#git push  master orgdata
+git config --global user.email "tcbabu@gmail.com"
+git config --global user.name "tcbabu"
+
+git commit -a -m "Update"
+#git remote add origin git@github.com:tcbabu/data.git
+git push -u origin master
