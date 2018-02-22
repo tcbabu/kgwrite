@@ -1,8 +1,9 @@
 $m220
-$o60
+$o40
 $f34
 $w16
 $h16
+$LE200
 $s22
 $SB
 'kgwrite' uses a coordinate system in (mm) suitable for A4size paper,
@@ -11,12 +12,11 @@ which is 210x297. All text processing commands start in a new line with
 the output will be in landscape mode with a maximum bottom page limit of 210.
 $SE
 
-$LE200
 $C3
 $f27
 $w12
-$h14
-$s20
+$h13
+$s18
 $o5
 $m90
 Basic Commands:
@@ -75,7 +75,7 @@ $SB
 import image file; <file name> <width> <height>
 $SE
 $o5
-$P
+
 Advanced Commands:
 
 $SL
