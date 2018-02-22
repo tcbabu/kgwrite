@@ -2730,7 +2730,7 @@ static int make_dot_adjusted_line(FILE * cfile, char *ln, int ofs, int rmg) {
     no = (rmg - ofs - dsp - rln) / (wd) + 0.5;
     rmg1 = (int) (rln / wd + 0.5) * wd;
     rmg1 = rmg - rmg1;
-    fprintf(cfile, "$A0\n%s\n$m%-d\n$r\n$A0\n", ln, rmg1);
+    fprintf(cfile, "$l\n$A0\n%s\n$m%-d\n$r\n$A0\n", ln, rmg1);
     for (level = 1; level < no; level++) {
 	fprintf(cfile, " .");
     }
