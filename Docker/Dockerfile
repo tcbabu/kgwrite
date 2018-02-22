@@ -51,5 +51,5 @@ RUN chmod 600 /home/babu/.ssh/id_rsa;
 RUN ls -lrta /home/babu;ls -lrt /home/babu/.ssh;rm -rf data;
 #RUN git clone babu@192.168.1.115:BUILD/kgwrite data
 #CMD ["/kgwrite","-fReadme.ps","data/Readme"]
-CMD /runscript
+#CMD /runscript
 #actual command to run
