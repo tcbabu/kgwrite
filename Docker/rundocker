@@ -1,3 +1,4 @@
 #docker run -u babu:babu kgwrite
-docker run -u babu:babu -h hplaptop kgwrite bash -c "/runscript \
-git@github.com:tcbabu/data.git"
+#docker run -u babu:babu -h hplaptop kgwrite bash -c "/runscript \
+docker run -u babu:babu -h hplaptop kgwrite /runscript \
+git@github.com:tcbabu/data.git
