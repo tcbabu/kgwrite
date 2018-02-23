@@ -1,3 +1,43 @@
+A note on encription
+
+Ofcource there is no confusion about encription, it is a method of
+coding the text so that people who has unauthorized access to the text
+will not be able to comprehend the text (hopefully). Genarally a secret
+code (string) is used to encript the text. A simple example is an
+'exclusive or' the text with the secret string. As we know we can just
+have an 'exclusive or' again on the converted string with the secret
+code to get back the original text. This is simple method of encription
+and one can have more complex ones. The problem with this scheme is that 
+anybody who have access to the secret code (string) can decode the
+encripted text. People can try a brute force method to arrive at the
+secrete code. It is to be noted that, if an encripted message/text is
+send, the receiver should know the secrete code to decript the text.
+There must be a way for receiver to get the secret code.  The risk
+of brute force attack can be reduced by frequently changing the
+secret code.
+
+Since long people thought about a way of encription method, with two
+keys, one for encripting and another for decripting, so that once
+encripted with a key, you need the second key to decript it. In this
+scheme, one key can be ditributed to all senders as public key and the
+second key, the private key, kept as secret by the receiver and it
+not known to others. The present method to arrive at this keys pair is
+based on difficulty in arriving the prime factors of large integer
+numbers. Under this scheme there is no need for the sender to know
+the private key and knowledge of the public key will not help
+in decripting the coded message. Only problem is as of now it is more
+cpu intensive than the first method and generally used to authenticate
+the person and then arrive at a secrete string and communicate further.
+This is the scheme used in 'ssh'. 
+
+Another concept related to this subject is hashing a file, though it is 
+not encripting. Hashing is a method to uniquly arrive at a string/code
+from a file. Though one can not get back a file from its hash, it can be
+used to check the integrity of a file. Different files always make
+different hash string and creating new hash string and comparing with
+a previous hash string can be used to check integrity/change in the
+file.
+
 About connecting through ssh/scp.
 
 To ssh/scp in batch mode (ie without passwd prompt), following
@@ -43,3 +83,89 @@ Now under .ssh, run
   machines.
 
   Permissions of these files should be as mentioned.
+
+
+About usage of git
+
+Git is a version control system which can have remote locations which
+used by others to get copy/clone of the repository.
+
+If you need to create a git repository of a project/files, the following
+steps are the basic commands.
+
+1. Either you create new directory or an existing one with the required 
+project related files.
+
+2. Go to the directory and issue
+    git init
+3. git got a concept of 'branches' to maintain different versions or
+   stages of the project. The default branch is 'master'. There ways
+   to create new branches, delete branches, merge branches. With
+   'git init' one created the 'master' branch and in that branch.
+    The next step is adding files and folders to the repository.
+    'git add <file>/<folder> <file> ....' will add files/folders
+    to the the cureent branch, ie to begin with 'master'.
+    If everything need to be added one can use;
+      'git add .'
+4.  Adding alone is not sufficient, one need to commit it.
+     ie , 'git commit -a -m "<info string>"
+    '-a' flag is to commit all changes made to the files in the
+     repository. If you don't do this the changes will not be
+     reflected. If one has created new files/folders it will not
+     be reflected in the repository unless it is explicity added
+     using ' git add ...' and the commit it using 'git commit....'
+5.   One can create new branch using
+      ' git branch <branch name' and can be moved to desired branch
+      using 'git checkout <branch name>'.
+      One can merge a branch to current branch using
+       'git merge <branch name>' . This will work if there
+      are no conflicts, for examples if different branches modified
+      same file and committed then a conflict will arise and it has to
+      be resolved manually before merging.
+
+6.   There is a concept of 'remote repository' which can be in the same
+machine, another machine in local network or a cloud repository.
+For transaction between local and remote one can use 'ssh' or 'https',
+which git decides using the url.
+One can have more than one remote repository.
+     If the need is to create a 'remote' in local network (ie same
+     machine or another machine in the network) one may follow the
+     steps below.
+
+     a. Create a new account for git admin in that machine, it may
+        an existing account also.
+     b. login in to that machine  and create a new folder with
+        a meaningful name connecting the repository.
+
+     c. go to the new folder and issue;
+         'git init --bare'
+     d. you may create the 'ssh' setting as explained earlier so
+        that batch ssh poosible.
+     c. come back to the original machine and move to the
+        git folder of interest. Make sure that one ssh can to
+        the 'remote'.
+        Now issue;
+          git remote add <remote_name> <remote_url>
+          eg.  git remote add git@192.168.1.20:myrepo
+                  or
+               git remote add git@machine.name:myrepo
+        again issue;
+          git push -u <remote_name> master
+ 
+        Cloud machines eg github.com, sourceforge.com etc provide
+        web interface to create  a new account, set up ssh /https etc
+        and initialize a new repository. Also they explain commands
+        to be issued locally which very much similar as above.
+      
+        Any time the local version is modified, remote can be synched with
+        local with push.
+ 
+        Others who need a copy of the repository can clone it.
+         
+        ie ; git clone <remote_url>
+
+        if the remote is updated and local needs to sych with remote
+       
+           git pull <remote_url>
+
+These are basic set of commands and there are more commands options.
