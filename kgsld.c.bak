@@ -13,7 +13,7 @@
  Note: On 21st Jan 2002
    slide is modified to print directly on a printer or to
    make a PostScript File
-   ie: slide -fPsFile <slide_input>
+   ie: slide -oPsFile <slide_input>
    In this case there will not be any screen output
  Note:dated 15th Jan 2018
    Using Kulina Graphics library
@@ -447,8 +447,8 @@ static unsigned char tmenu[23] = { " Give text file name :" };
     pt = first_adr;\
   }
 #define Set_Defaults \
-      pglimit=258.0/5.62;\
-      pglimit_bk=258.0/5.62;\
+      pglimit=268.0/5.62;\
+      pglimit_bk=268.0/5.62;\
       Columns=1,Top_skip=22,Para_of=10;\
       Col_shft=0.;\
       Col_gap=10;\
@@ -1888,6 +1888,7 @@ static void check_too_low(char *l, float lnlng, float dist, float wd) {
 	    n_blk++;
 	i++;
     }
+    if(n_blk==0) n_blk=1;
     if (dist > (lnlng * 0.97))
 	return;
     E_blnk = (int) ((lnlng * 0.97 - dist) / wd + 0.5);
@@ -2729,7 +2730,7 @@ static int make_dot_adjusted_line(FILE * cfile, char *ln, int ofs, int rmg) {
     no = (rmg - ofs - dsp - rln) / (wd) + 0.5;
     rmg1 = (int) (rln / wd + 0.5) * wd;
     rmg1 = rmg - rmg1;
-    fprintf(cfile, "$A0\n%s\n$m%-d\n$r\n$A0\n", ln, rmg1);
+    fprintf(cfile, "$l\n$A0\n%s\n$m%-d\n$r\n$A0\n", ln, rmg1);
     for (level = 1; level < no; level++) {
 	fprintf(cfile, " .");
     }
@@ -3264,7 +3265,7 @@ static void read_txt(char *flname, float ofs, float yy) {
 		kgTextSize(Img, th * hfac, tw * wfac, gap);
 		xdsp = 0;
 	    };
-	    if (YY > -117.) {
+	    if (YY > -127.) {
 		kgMove2f(Img, xdsp + ofs, YY);
 		YY = -1000.;
 	    } else {
@@ -3383,9 +3384,9 @@ static void readnum(char code, char *str) {
 	break;
     case 'P':
 	ofst = scanint(str);
-	theadpos = 163 - ofst;
+	theadpos = 170 - ofst;
 	tlinepos = theadpos - 1.5;
-	bheadpos = -117.0 + ofst;
+	bheadpos = -127.0 + ofst;
 	blinepos = bheadpos + 5.5;
 	if (pagepos > 0.)
 	    pagepos = theadpos;
@@ -3937,9 +3938,11 @@ static short nonblk(char *ln) {
 }
 
 static void Reset_for_tp(float *xp, float *yp) {
-    xp[0] = 0., xp[1] = 373.0, yp[0] = -117., yp[1] = 163.;
-    Yend= 163;
-    kgUserFrame(Img, 0., -117., 373., 163.);
+    xp[0] = 0., xp[1] = 297.0, yp[0] = -127., yp[1] = 170.;
+    Yend= 170;
+//    kgUserFrame(Img, 0., -117., 373., 163.);
+    //kgUserFrame(Img, 0., -127., 396., 170.);
+    kgUserFrame(Img, 0., -127., 297., 170.);
     kgTextColor(Img, tcolor);
     kgTextAngle(Img, 0.);
     kgTextSize(Img, th, tw, tg);
@@ -4453,7 +4456,9 @@ static int print_process(char *flname, int Ponly) {
 	if (RIGHT_MAR < 220) {
 //        kgHardCopy(Img,"txt.ps");
 	    wxl = w[0], wyl = w[1];
-	    wxu = wxl + (w[2] - w[0]) * 0.5625;
+//`	    wxu = wxl + (w[2] - w[0]) * 0.5625;
+//	    wxu = wxl + (w[2] - w[0]) * 0.5303;
+	    wxu = wxl + (w[2] - w[0]) * 0.70707;
 	    wyu = w[3];
             if(PsOut==1) {
 	      kgUserFrame(Img, wxl, wyl, wxu, wyu);
@@ -4464,7 +4469,7 @@ static int print_process(char *flname, int Ponly) {
             }
 	} else {
 	    wxl = w[0], wxu = w[2];
-	    wyl = w[1];
+	    wyl = w[3]-(w[3]-w[1])*0.70707;
 	    wyu = w[3];
             if(PsOut) {
 	      kgUserFrame(Img, wxl, wyl, wxu, wyu);
@@ -4514,7 +4519,7 @@ static int PrintUsage(char *name) {
     fprintf(stderr,"Usage :\n"
                       "%-s [options] <input file> \n"
                       "Options:\n"
-                      " -f[PsFile] : create postscript output\n"
+                      " -o[PsFile] : create postscript output\n"
                       "               default output output.ps\n"
                       " -p<[xresxyres:]png_file> : create Png image\n"
                       "         xres Image resolution x direction\n"
@@ -4537,7 +4542,7 @@ static int PrintUsage(char *name) {
 
 static void ProcessTextDoc(int argc, char *argv[]) {
     int i,j,INPUT;
-    static float xp[2] = { 0., 373. }, yp[2] = { -117.0, 163.0 };
+    static float xp[2] = { 0., 297. }, yp[2] = { -127.0, 170.0 };
     char ch, flname[30];
     char Line[300];
     if(TmpDir==NULL) {
@@ -4581,12 +4586,12 @@ static void ProcessTextDoc(int argc, char *argv[]) {
     Frames = 300;
     
     strcpy(PsFile, "output.ps");
-    remove(PsFile);
     if(argc == 1) {
       PrintUsage(argv[0]);
       return ;
     }
     INPUT=0;
+    
     for (i = 1; i < argc; i++) {
 	ch = *argv[i];
 	if (ch == '-') {
@@ -4596,6 +4601,7 @@ static void ProcessTextDoc(int argc, char *argv[]) {
 		Pon = 1;
                 PngOut=1;
                 strcpy(Line,argv[i]+2);
+                j=0;
                 while(Line[j]!='\0') {
                    if((Line[j]=='x') ||(Line[j]=='X'))
                        Line[j]= ' ';
@@ -4607,7 +4613,7 @@ static void ProcessTextDoc(int argc, char *argv[]) {
                 }
                 if(Line[0] > ' ') sscanf(Line,"%d%d",&Pxres,&Pyres);
 	    }
-	    if (*(argv[i] + 1) == 'f') {
+	    if (*(argv[i] + 1) == 'o') {
 		strcpy(PsFile, argv[i] + 2);
 		if (PsFile[0] == '\0')
 		    strcpy(PsFile, "output.ps");
@@ -4669,9 +4675,13 @@ static void ProcessTextDoc(int argc, char *argv[]) {
         kgFreeImage(tmp);
       }
     }
+    if(PsOut) remove(PsFile);
     Img = kgInitGph(960, 720);
 //   Img = kgInitImage(960,720,1);
-    kgUserFrame(Img, 0., -117., 373., 163.);
+//    kgUserFrame(Img, 0., -117., 373., 163.);
+//    kgUserFrame(Img, 0., -117., 373., 180.);
+    kgUserFrame(Img, 0., -127., 297., 170.);
+//    kgUserFrame(Img, 0., -127., 396., 170.);
     Reset_for_tp(xp, yp);
     print_process(flname, 1);
     kgCloseGph(Img);
