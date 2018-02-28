@@ -1,38 +1,38 @@
 
-A note on encription
+A NOTE ON ENCRIPTION
 
-Ofcource there is no confusion about encription, it is a method of
+There is no confusion about encryption, it is a method of
 coding the text so that people who has unauthorized access to the text
-will not be able to comprehend the text (hopefully). Genarally a secret
-code (string) is used to encript the text. A simple example is an
+will not be able to comprehend the text (hopefully). Generally a secret
+code (string) is used to encrypt the text. A simple example is an
 'exclusive or' the text with the secret string. As we know we can just
 have an 'exclusive or' again on the converted string with the secret
-code to get back the original text. This is simple method of encription
+code to get back the original text. This is simple method of encryption
 and one can have more complex ones. The problem with this scheme is that 
 anybody who have access to the secret code (string) can decode the
-encripted text. People can try a brute force method to arrive at the
-secrete code. It is to be noted that, if an encripted message/text is
-send, the receiver should know the secrete code to decript the text.
+encrypted text. People can try a brute force method to arrive at the
+secrete code. It is to be noted that, if an encrypted message/text is
+send, the receiver should know the secrete code to decrypt the text.
 There must be a way for receiver to get the secret code.  The risk
 of brute force attack can be reduced by frequently changing the
 secret code.
 
-Since long people thought about a way of encription method, with two
-keys, one for encripting and another for decripting, so that once
-encripted with a key, you need the second key to decript it. In this
-scheme, one key can be ditributed to all senders as public key and the
+Since long people thought about a way of encryption method, with two
+keys, one for encrypting and another for decrypting, so that once
+encrypted with a key, you need the second key to decrypt it. In this
+scheme, one key can be distributed to all senders as public key and the
 second key, the private key, kept as secret by the receiver and it
 not known to others. The present method to arrive at this keys pair is
 based on difficulty in arriving the prime factors of large integer
 numbers. Under this scheme there is no need for the sender to know
 the private key and knowledge of the public key will not help
-in decripting the coded message. Only problem is as of now it is more
-cpu intensive than the first method and generally used to authenticate
+in decrypting the coded message. Only problem is as of now it is more
+CPU intensive than the first method and generally used to authenticate
 the person and then arrive at a secrete string and communicate further.
 This is the scheme used in 'ssh'. 
 
 Another concept related to this subject is hashing a file, though it is 
-not encripting. Hashing is a method to uniquly arrive at a string/code
+not encrypting. Hashing is a method to uniquely arrive at a string/code
 from a file. Though one can not get back a file from its hash, it can be
 used to check the integrity of a file. Different files always make
 different hash string and creating new hash string and comparing with
@@ -41,7 +41,7 @@ file.
 
 About connecting through ssh/scp.
 
-To ssh/scp in batch mode (ie without passwd prompt), following
+To ssh/scp in batch mode (ie without password prompt), following
 steps are required.
 
 1. .ssh directory in $(HOME). It should not have write permission
@@ -53,12 +53,12 @@ ie cd ~
 Now under .ssh, run
 
    ssh-keygen -t rsa
-   it will prompt for passpraice, which can be empty, otherwise
-   it wiil be prompted for at use also.
+   it will prompt for passphrase, which can be empty, otherwise
+   it will be prompted for at use also.
 
    it will create two files
    1. id_rsa  which is private key and should not be shared with others,
-      other than extra ordinary situations. Only the ower should
+      other than extra ordinary situations. Only the owner should
       have permissions on this.
       ie it must be 'chmod 600 id_rsa'.
   2. id_rsa.pub the public key which can be shared with others
@@ -111,7 +111,7 @@ project related files.
    'git init' one created the 'master' branch and in that branch.
     The next step is adding files and folders to the repository.
     'git add <file>/<folder> <file> ....' will add files/folders
-    to the the cureent branch, ie to begin with 'master'.
+    to the the current branch, ie to begin with 'master'.
     If everything need to be added one can use;
       'git add .'
 4.  Adding alone is not sufficient, one need to commit it.
@@ -119,7 +119,7 @@ project related files.
     '-a' flag is to commit all changes made to the files in the
      repository. If you don't do this the changes will not be
      reflected. If one has created new files/folders it will not
-     be reflected in the repository unless it is explicity added
+     be reflected in the repository unless it is explicitly added
      using ' git add ...' and the commit it using 'git commit....'
      
      The reverse of add is
@@ -138,10 +138,10 @@ project related files.
       be resolved manually.
       The conflicts will be marked in the file can modified
       using an editor.
-      Once conflits are resolved manually, it can be committed
+      Once conflicts are resolved manually, it can be committed
        'git commit -a -m "<commit message>"'
       
-      However two diffrent branches modified different files, it is 
+      However two different branches modified different files, it is 
       not a problem. Merging both to the master(or to any other branch)
       will include the modifications from both.
 
@@ -150,7 +150,7 @@ project related files.
            git merge branch1
            git merge branch2
       Now master will have both modifications in branch1 and branch2
-      (provided they modify diffrent files).
+      (provided they modify different files).
 
       Similar to adding files is removing files. However if a
       common file is removed from one branch and another branch
@@ -160,16 +160,16 @@ project related files.
 7.    One can remove a branch by issuing
     
        'git branch -d < branch name> .....<branch name>
-      This will work only if braches to be deleted are merged with
+      This will work only if branches to be deleted are merged with
       current branch.
       In case one needs to delete a branch unconditionally, issue
         'git branch -D <branch-name>'
 
 8.   git cloning
-     Cloning is making exat copy of of a repository from a remote or
+     Cloning is making exact copy of of a repository from a remote or
      another local repository.
-     This a way of collaborating work or can be even a braching out.
-     It can be as issed as follows
+     This a way of collaborating work or can be even a branching out.
+     It can be as issued as follows
       'git clone <remote> <local_folder>'
        or
        'git clone <path to git repo> <local_folder>
@@ -179,7 +179,7 @@ project related files.
        'git pull <new_repo>'
      The modifications of the new repo will be fetched and merged
      with currently active branch of the original. However it
-     there are conflicts manual modifications may be requiired.
+     there are conflicts manual modifications may be required.
      
      Another option just to check the modification of the new
      by the old is to fetch the new. ie;
@@ -203,7 +203,7 @@ One can have more than one remote repository.
      c. go to the new folder and issue;
          'git init --bare'
      d. you may create the 'ssh' setting as explained earlier so
-        that batch ssh poosible.
+        that batch ssh possible.
      c. come back to the original machine and move to the
         git folder of interest. Make sure that one ssh can to
         the 'remote'.
@@ -220,14 +220,14 @@ One can have more than one remote repository.
         and initialize a new repository. Also they explain commands
         to be issued locally which very much similar as above.
       
-        Any time the local version is modified, remote can be synched with
+        Any time the local version is modified, remote can be synced with
         local with push.
  
         Others who need a copy of the repository can clone it.
          
         ie ; git clone <remote_url>
 
-        if the remote is updated and local needs to sych with remote
+        if the remote is updated and local needs to sync with remote
        
            git pull <remote_url>
 
