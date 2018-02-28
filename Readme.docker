@@ -249,3 +249,5 @@ project related files.
 These are basic set of commands and there are more commands and options.
 
 ABOUT DOCKER
+
+   In a sense docker is a packing method like tar, rpm ,deb etc.
