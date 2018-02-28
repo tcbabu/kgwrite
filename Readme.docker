@@ -91,6 +91,12 @@ About usage of git
 Git is a version control system which can have remote locations which
 used by others to get copy/clone of the repository.
 
+If you are just starting your first git repository you
+may need to issue the following setup.
+
+  git config --global user.name "Your user name"
+  git config --global user.emal "your email"
+
 If you need to create a git repository of a project/files, the following
 steps are the basic commands.
 
