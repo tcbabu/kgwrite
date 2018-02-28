@@ -143,14 +143,19 @@ project related files.
       
       However two diffrent branches modified different files, it is 
       not a problem. Merging both to the master(or to any other branch)
-      will include the the modifications
+      will include the modifications from both.
 
       eq.
            git checkout master
            git merge branch1
            git merge branch2
       Now master will have both modifications in branch1 and branch2
-      (provided they modify diffrent files)
+      (provided they modify diffrent files).
+
+      Similar to adding files is removing files. However if a
+      common file is removed from one branch and another branch
+      keeps it (and may be modified also) can lead to conflicts
+      on merging which has to be modified manually and committed.
         
 7.    One can remove a branch by issuing
     
@@ -160,7 +165,28 @@ project related files.
       In case one needs to delete a branch unconditionally, issue
         'git branch -D <branch-name>'
 
-8.   There is a concept of 'remote repository' which can be in the same
+8.   git cloning
+     Cloning is making exat copy of of a repository from a remote or
+     another local repository.
+     This a way of collaborating work or can be even a braching out.
+     It can be as issed as follows
+      'git clone <remote> <local_folder>'
+       or
+       'git clone <path to git repo> <local_folder>
+     Now the new user can modify the repo and commit it.
+     Any stage original repo can get the modifications of the
+     new repository by issuing;
+       'git pull <new_repo>'
+     The modifications of the new repo will be fetched and merged
+     with currently active branch of the original. However it
+     there are conflicts manual modifications may be requiired.
+     
+     Another option just to check the modification of the new
+     by the old is to fetch the new. ie;
+      'git fetch <new>'
+     and one can check the modifications by issuing
+       'git log -p HEAD..FETCH_HEAD'
+9.   There is a concept of 'remote repository' which can be in the same
 machine, another machine in local network or a cloud repository.
 For transaction between local and remote one can use 'ssh' or 'https',
 which git decides using the url.
