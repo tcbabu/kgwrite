@@ -149,6 +149,10 @@ project related files.
 7.    One can remove a branch by issuing
     
        'git branch -d < branch name> .....<branch name>
+      This will work only if braches to be deleted are merged with
+      current branch.
+      In case one needs to delete a branch unconditionally, issue
+        'git branch -D <branch-name>'
 
 8.   There is a concept of 'remote repository' which can be in the same
 machine, another machine in local network or a cloud repository.
