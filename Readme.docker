@@ -1,5 +1,8 @@
 
+
 A NOTE ON ENCRIPTION
+
+Symmetric Key Encryption
 
 There is no confusion about encryption, it is a method of
 coding the text so that people who has unauthorized access to the text
@@ -8,38 +11,48 @@ code (string) is used to encrypt the text. A simple example is an
 'exclusive or' the text with the secret string. As we know we can just
 have an 'exclusive or' again on the converted string with the secret
 code to get back the original text. This is simple method of encryption
-and one can have more complex ones. The problem with this scheme is that 
-anybody who have access to the secret code (string) can decode the
-encrypted text. People can try a brute force method to arrive at the
-secrete code. It is to be noted that, if an encrypted message/text is
+and one can have more complex ones.
+It is to be noted that, if an encrypted message/text is
 send, the receiver should know the secrete code to decrypt the text.
-There must be a way for receiver to get the secret code.  The risk
-of brute force attack can be reduced by frequently changing the
-secret code.
+So there must be a way for receiver to get the secret code. 
+Anybody who have access to the secret code (string) can decode the
+encrypted text. People may even try a brute force method to arrive at the
+secrete code.  The risk of brute force attack can be reduced by 
+frequently changing the secret code.
+
+Public Key/Private key Encryption
 
 Since long people thought about a way of encryption method, with two
 keys, one for encrypting and another for decrypting, so that once
 encrypted with a key, you need the second key to decrypt it. In this
 scheme, one key can be distributed to all senders as public key and the
-second key, the private key, kept as secret by the receiver and it
+second key, the private key, kept as secret by the receiver and it is
 not known to others. The present method to arrive at this keys pair is
-based on difficulty in arriving the prime factors of large integer
+based on difficulty in arriving the integer factors of large integer
 numbers. Under this scheme there is no need for the sender to know
 the private key and knowledge of the public key will not help
-in decrypting the coded message. Only problem is as of now it is more
+in decrypting the coded message. One disadvantage as of now is,it is more
 CPU intensive than the first method and generally used to authenticate
 the person and then arrive at a secrete string and communicate further.
 This is the scheme used in 'ssh'. 
+
+CA Certificates
+
+Since public-keys are distributed freely, it may be required
+to verify that it is really from the original supplier. CA certification
+is a method to that end, and known public keys are signed by well known
+agencies to build a confidence on the poublic keys.
+
+Hashing
 
 Another concept related to this subject is hashing a file, though it is 
 not encrypting. Hashing is a method to uniquely arrive at a string/code
 from a file. Though one can not get back a file from its hash, it can be
 used to check the integrity of a file. Different files always make
 different hash string and creating new hash string and comparing with
-a previous hash string can be used to check integrity/change in the
-file.
+a previous hash string can be used to check the integrity of a file.
 
-About connecting through ssh/scp.
+ABOUT CONNECTING THROUGH SSH/SCP.
 
 To ssh/scp in batch mode (ie without password prompt), following
 steps are required.
@@ -68,11 +81,12 @@ Now under .ssh, run
   The third file of importance is 'authorized_keys' which also must
   only have read permissions for others.
   ie 'chmod 644 authorized_keys'. This file is a collection of
-  public keys of others who are allowed to login to this machine.
+  public keys of others who are allowed to login to the user/machine.
   One can certainly add own public key to this file so it is possible to
   ssh own machine/account.
   ie 'cat id_rsa.pub >> authorized_keys'.
-  One can do this for public keys of others/machines like this.
+  One can add  public keys of others/machines like this to allow logins
+  other users/machines.
   Always remember about the 'chmod'.
 
   Forth file is known_hosts. Initially one can just touch it.
@@ -86,10 +100,10 @@ Now under .ssh, run
   Permissions of these files should be as mentioned.
 
 
-About usage of git
+ABOUT USAGE OF GIT
 
 Git is a version control system which can have remote locations which
-used by others to get copy/clone of the repository.
+can be used by others to get copy/clone of the repository.
 
 If you are just starting your first git repository you
 may need to issue the following setup.
@@ -100,19 +114,20 @@ may need to issue the following setup.
 If you need to create a git repository of a project/files, the following
 steps are the basic commands.
 
-1. Either you create new directory or an existing one with the required 
+1. Either you create or new directory or an existing one with the required 
 project related files.
 
 2. Go to the directory and issue
     git init
 3. git got a concept of 'branches' to maintain different versions or
-   stages of the project. The default branch is 'master'. There ways
+   stages of a project. The default branch is 'master'. There are ways
    to create new branches, delete branches, merge branches. With
-   'git init' one created the 'master' branch and in that branch.
+   'git init' one created by default the 'master' branch and by default moved to
+    that branch.
     The next step is adding files and folders to the repository.
     'git add <file>/<folder> <file> ....' will add files/folders
     to the the current branch, ie to begin with 'master'.
-    If everything need to be added one can use;
+    If everything needs to be added one can use;
       'git add .'
 4.  Adding alone is not sufficient, one need to commit it.
      ie , 'git commit -a -m "<info string>"
@@ -133,7 +148,7 @@ project related files.
 
 6     One can merge a branch to current branch using
        'git merge <branch name>' . This will work if there
-      are no conflicts, for examples if different branches modified
+      are no conflicts, for examples if  branches modified
       same file and committed then a conflict will arise and it has to
       be resolved manually.
       The conflicts will be marked in the file can modified
@@ -152,10 +167,10 @@ project related files.
       Now master will have both modifications in branch1 and branch2
       (provided they modify different files).
 
-      Similar to adding files is removing files. However if a
+      Similar to adding files is the case of removing files. However if a
       common file is removed from one branch and another branch
       keeps it (and may be modified also) can lead to conflicts
-      on merging which has to be modified manually and committed.
+      on merging and has to be modified manually and then committed.
         
 7.    One can remove a branch by issuing
     
@@ -166,7 +181,7 @@ project related files.
         'git branch -D <branch-name>'
 
 8.   git cloning
-     Cloning is making exact copy of of a repository from a remote or
+     Cloning is making exact copy of a repository from a remote or
      another local repository.
      This a way of collaborating work or can be even a branching out.
      It can be as issued as follows
@@ -187,12 +202,12 @@ project related files.
      and one can check the modifications by issuing
        'git log -p HEAD..FETCH_HEAD'
 9.   There is a concept of 'remote repository' which can be in the same
-machine, another machine in local network or a cloud repository.
-For transaction between local and remote one can use 'ssh' or 'https',
-which git decides using the url.
-One can have more than one remote repository.
+     machine, another machine in local network or a cloud repository.
+     For transaction between local and remote one can use 'ssh' or 'https',
+     which git decides using the url.
+     One can have more than one remote repository.
      If the need is to create a 'remote' in local network (ie same
-     machine or another machine in the network) one may follow the
+     machine or another machine in the local network) one may follow the
      steps below.
 
      a. Create a new account for git admin in that machine, it may
@@ -205,20 +220,20 @@ One can have more than one remote repository.
      d. you may create the 'ssh' setting as explained earlier so
         that batch ssh possible.
      c. come back to the original machine and move to the
-        git folder of interest. Make sure that one ssh can to
+        git folder of interest. Make sure that one can ssh to
         the 'remote'.
         Now issue;
           git remote add <remote_name> <remote_url>
-          eg.  git remote add git@192.168.1.20:myrepo
+          eg.  git remote add origin git@192.168.1.20:myrepo
                   or
-               git remote add git@machine.name:myrepo
+               git remote add gitorigin git@machine.name:myrepo
         again issue;
           git push -u <remote_name> master
  
         Cloud machines eg github.com, sourceforge.com etc provide
-        web interface to create  a new account, set up ssh /https etc
+        web interface to create  a new account, set up ssh/https etc
         and initialize a new repository. Also they explain commands
-        to be issued locally which very much similar as above.
+        to be issued locally which are very much similar as above.
       
         Any time the local version is modified, remote can be synced with
         local with push.
@@ -231,4 +246,6 @@ One can have more than one remote repository.
        
            git pull <remote_url>
 
-These are basic set of commands and there are more commands options.
+These are basic set of commands and there are more commands and options.
+
+ABOUT DOCKER
