@@ -115,16 +115,42 @@ project related files.
      reflected. If one has created new files/folders it will not
      be reflected in the repository unless it is explicity added
      using ' git add ...' and the commit it using 'git commit....'
+     
+     The reverse of add is
+   
+      'git rm <file> .... <file>'
+
 5.   One can create new branch using
       ' git branch <branch name' and can be moved to desired branch
       using 'git checkout <branch name>'.
-      One can merge a branch to current branch using
+
+
+6     One can merge a branch to current branch using
        'git merge <branch name>' . This will work if there
       are no conflicts, for examples if different branches modified
       same file and committed then a conflict will arise and it has to
-      be resolved manually before merging.
+      be resolved manually.
+      The conflicts will be marked in the file can modified
+      using an editor.
+      Once conflits are resolved manually, it can be committed
+       'git commit -a -m "<commit message>"'
+      
+      However two diffrent branches modified different files, it is 
+      not a problem. Merging both to the master(or to any other branch)
+      will include the the modifications
 
-6.   There is a concept of 'remote repository' which can be in the same
+      eq.
+           git checkout master
+           git merge branch1
+           git merge branch2
+      Now master will have both modifications in branch1 and branch2
+      (provided they modify diffrent files)
+        
+7.    One can remove a branch by issuing
+    
+       'git branch -d < branch name> .....<branch name>
+
+8.   There is a concept of 'remote repository' which can be in the same
 machine, another machine in local network or a cloud repository.
 For transaction between local and remote one can use 'ssh' or 'https',
 which git decides using the url.
