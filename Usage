@@ -10,6 +10,7 @@ $SB
 which is 210x297. All text processing commands start in a new line with
 '$' as the first character. In case the text width crosses 210 then
 the output will be in landscape mode with a maximum bottom page limit of 210.
+Plese note that multiple parametrers are seperated by a space character.
 $SE
 
 $C3
