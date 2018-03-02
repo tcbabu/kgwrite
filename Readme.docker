@@ -1,253 +1,409 @@
+$f24
+$m180
+$o10
+$MC
+$SH3 l
+1. A NOTE ON ENCRIPTION
+$SE
 
+$SH2 l
+1.1 Symmetric Key Encryption
+$SE
 
-A NOTE ON ENCRIPTION
-
-Symmetric Key Encryption
-
+$SP
 There is no confusion about encryption, it is a method of
 coding the text so that people who has unauthorized access to the text
 will not be able to comprehend the text (hopefully). Generally a secret
 code (string) is used to encrypt the text. A simple example is an
 'exclusive or' the text with the secret string. As we know we can just
 have an 'exclusive or' again on the converted string with the secret
-code to get back the original text. This is simple method of encryption
+code to get back the original text. This is s very simple method of encryption
 and one can have more complex ones.
 It is to be noted that, if an encrypted message/text is
 send, the receiver should know the secrete code to decrypt the text.
-So there must be a way for receiver to get the secret code. 
+So there must be a way for the receiver to get the secret code.
 Anybody who have access to the secret code (string) can decode the
 encrypted text. People may even try a brute force method to arrive at the
-secrete code.  The risk of brute force attack can be reduced by 
+secrete code.  The risk of brute force attack can be reduced by
 frequently changing the secret code.
+$SE
 
-Public Key/Private key Encryption
+$SH2 l
+1.2 Public Key/Private key Encryption
+$SE
 
+$SP
 Since long people thought about a way of encryption method, with two
 keys, one for encrypting and another for decrypting, so that once
 encrypted with a key, you need the second key to decrypt it. In this
 scheme, one key can be distributed to all senders as public key and the
 second key, the private key, kept as secret by the receiver and it is
-not known to others. The present method to arrive at this keys pair is
+not known to others. The present method to arrive at these keys pair is
 based on difficulty in arriving the integer factors of large integer
 numbers. Under this scheme there is no need for the sender to know
 the private key and knowledge of the public key will not help
 in decrypting the coded message. One disadvantage as of now is,it is more
 CPU intensive than the first method and generally used to authenticate
 the person and then arrive at a secrete string and communicate further.
-This is the scheme used in 'ssh'. 
+This is the scheme used in 'ssh'.
+$SE
 
-CA Certificates
+$SH2 l
+1.3 CA Certificates
+$SE
 
+$SP
 Since public-keys are distributed freely, it may be required
 to verify that it is really from the original supplier. CA certification
 is a method to that end, and known public keys are signed by well known
-agencies to build a confidence on the poublic keys.
+agencies to build a confidence on the public keys.
+$SE
 
-Hashing
+$SH2 l
+1.4 Hashing
+$SE
 
-Another concept related to this subject is hashing a file, though it is 
+$SP
+Another concept related to this subject is hashing a file, though it is
 not encrypting. Hashing is a method to uniquely arrive at a string/code
 from a file. Though one can not get back a file from its hash, it can be
 used to check the integrity of a file. Different files always make
 different hash string and creating new hash string and comparing with
 a previous hash string can be used to check the integrity of a file.
+$SE
 
-ABOUT CONNECTING THROUGH SSH/SCP.
+$P
+$SH3 l
+2. ABOUT CONNECTING THROUGH SSH/SCP.
+$SE
 
+$SP
 To ssh/scp in batch mode (ie without password prompt), following
 steps are required.
 
+$SL
 1. .ssh directory in $(HOME). It should not have write permission
 for others. ie it must be chmod 755
- 
-ie cd ~
+$SE
+$l
+ie;
+$f27
+   cd ~
    mkdir .ssh
    chmod 755 .ssh
+$f24
+
 Now under .ssh, run
 
+$f27
    ssh-keygen -t rsa
-   it will prompt for passphrase, which can be empty, otherwise
-   it will be prompted for at use also.
+$f24
 
-   it will create two files
-   1. id_rsa  which is private key and should not be shared with others,
-      other than extra ordinary situations. Only the owner should
-      have permissions on this.
-      ie it must be 'chmod 600 id_rsa'.
-  2. id_rsa.pub the public key which can be shared with others
-     but must have  only read permissions to others.
-     ie 'chmod 644 id_rsa.pub'
+$SP
+It will prompt for passphrase, which can be empty, otherwise
+it will be prompted for at use also.
+Passphrase is a mechanism to encrypt the private key, so that
+even if somebody got access to it, the passphrase is needed
+to use it. The problem with it is that, it will create problem
+in automated mode, so may be avoided in such cases.
+$SE
 
+   It will create two files
+$o25
+$SL
+   1. !%id_rsa  which is private key and should not be shared with others,
+other than extra ordinary situations. Only the owner should
+have permissions on this.
+$SE
+      ie it must be !f27'chmod 600 id_rsa'!f24.
+$SL
+  2. !%id_rsa.pub the public key which can be shared with others
+but must have  only read permissions to others.
+$SE
+     ie !f27'chmod 644 id_rsa.pub'!f24
+$o10
+
+$SP
   The third file of importance is 'authorized_keys' which also must
-  only have read permissions for others.
-  ie 'chmod 644 authorized_keys'. This file is a collection of
-  public keys of others who are allowed to login to the user/machine.
-  One can certainly add own public key to this file so it is possible to
-  ssh own machine/account.
-  ie 'cat id_rsa.pub >> authorized_keys'.
+only have read permissions for others.
+ie !f27'chmod 644 authorized_keys'!f24. This file is a collection of
+public keys of others who are allowed to login to the user/machine.
+One can certainly add own public key to this file so it is possible to
+ssh to own machine/account.
+$SE
+$l
+  ie !f27'cat id_rsa.pub >> authorized_keys'.!f24
+$SP
   One can add  public keys of others/machines like this to allow logins
-  other users/machines.
-  Always remember about the 'chmod'.
-
+from other users/machines to the account in the machine.
+Always remember about the permissions on the files.
+$SP
   Forth file is known_hosts. Initially one can just touch it.
-  It must also be ' touch known_hosts;chmod 644 known_hosts'.
-  'known_hosts' will get build up on making ssh to other 
-  user/machine.
-
-  The file authorized_keys can be installed in other user-accounts/
-  machines.
-
+It must also be !f27' touch known_hosts;chmod 644 known_hosts'.!f24
+'known_hosts' will get build up on making ssh to other
+user/machine.
+$SP
+  If one need access to an account in a machine he has to append his
+public key to the authorized_keys of that account and also need to copy
+the public key of that account to own authorized keys.
+$SE
+$l
   Permissions of these files should be as mentioned.
 
+$P
+$SH3 l
+3. ABOUT USAGE OF GIT
+$SE
 
-ABOUT USAGE OF GIT
-
+$SH2 l
+3.1 General Description
+$SE
+$SP
 Git is a version control system which can have remote locations which
 can be used by others to get copy/clone of the repository.
-
+$SE
+$SP
 If you are just starting your first git repository you
 may need to issue the following setup.
+$SE
 
+$f27
   git config --global user.name "Your user name"
   git config --global user.emal "your email"
+$f24
 
+$SP
 If you need to create a git repository of a project/files, the following
 steps are the basic commands.
+$SE
 
-1. Either you create or new directory or an existing one with the required 
+$o15
+$SL
+1. !%Either you create or new directory or an existing one with the required
 project related files.
-
-2. Go to the directory and issue
-    git init
-3. git got a concept of 'branches' to maintain different versions or
-   stages of a project. The default branch is 'master'. There are ways
-   to create new branches, delete branches, merge branches. With
-   'git init' one created by default the 'master' branch and by default moved to
-    that branch.
+$SE
+$SL
+2. !%Go to the directory and issue
+!f27git init!f24
+$SL
+3. !%git got a concept of 'branches' to maintain different versions or
+stages of a project. The default branch is 'master'. There are ways
+to create new branches, delete branches, merge branches. With
+!f27'git init'!f24 one created by default the 'master' branch and by default moved to
+that branch.
+$SE
+$o25
+$SB
     The next step is adding files and folders to the repository.
-    'git add <file>/<folder> <file> ....' will add files/folders
-    to the the current branch, ie to begin with 'master'.
-    If everything needs to be added one can use;
-      'git add .'
-4.  Adding alone is not sufficient, one need to commit it.
-     ie , 'git commit -a -m "<info string>"
-    '-a' flag is to commit all changes made to the files in the
-     repository. If you don't do this the changes will not be
-     reflected. If one has created new files/folders it will not
-     be reflected in the repository unless it is explicitly added
-     using ' git add ...' and the commit it using 'git commit....'
-     
+!f27'git add <file>/<folder> <file> ....' !f24will add files/folders
+to the the current branch, ie to begin with 'master'.
+If everything needs to be added one can use;
+!f27'git add .'!f24
+$SE
+$o15
+
+$SL
+4. !%Adding alone is not sufficient, one need to commit it.
+ie , !f27'git commit -a -m "<info string>"!f24.
+'-a' flag is to commit all changes made to the files in the
+repository. If you don't do this the changes will not be
+reflected. If one has created new files/folders it will not
+be reflected in the repository unless it is explicitly added
+using !f27' git add ...'!f24 and the commit it using !f27'git commit....'!f24
+$SE
+
+$SB
      The reverse of add is
-   
-      'git rm <file> .... <file>'
 
-5.   One can create new branch using
-      ' git branch <branch name' and can be moved to desired branch
-      using 'git checkout <branch name>'.
+$l
+      !f27'git rm <file> .... <file>'!f24
+
+$SL
+5. !%One can create new branch using
+!f27' git branch <branch name>'!f24 and can be moved to desired branch
+using !f27'git checkout <branch name>'!f24.
+$SE
 
 
-6     One can merge a branch to current branch using
-       'git merge <branch name>' . This will work if there
-      are no conflicts, for examples if  branches modified
-      same file and committed then a conflict will arise and it has to
-      be resolved manually.
-      The conflicts will be marked in the file can modified
-      using an editor.
-      Once conflicts are resolved manually, it can be committed
-       'git commit -a -m "<commit message>"'
-      
-      However two different branches modified different files, it is 
-      not a problem. Merging both to the master(or to any other branch)
-      will include the modifications from both.
+$SL
+6. !%One can merge a branch to current branch using
+!f27'git merge <branch name>'!f24 . This will work if there
+are no conflicts, for examples if  branches modified
+same file and committed then a conflict will arise and it has to
+be resolved manually.
+The conflicts will be marked in the file and can be modified
+using an editor.
+Once conflicts are resolved manually, it can be committed
+$SE
 
-      eq.
+       !f27'git commit -a -m "<commit message>"'!f24
+
+$o25
+$SB
+      However two different branches modified different files, it is
+not a problem. Merging both to the master(or to any other branch)
+will include the modifications from both.
+$SE
+
+$l
+      eg.
+$f27
            git checkout master
            git merge branch1
            git merge branch2
+
+$f24
+$SP
       Now master will have both modifications in branch1 and branch2
-      (provided they modify different files).
+(provided they modify different files).
+$SE
 
+$SB
       Similar to adding files is the case of removing files. However if a
-      common file is removed from one branch and another branch
-      keeps it (and may be modified also) can lead to conflicts
-      on merging and has to be modified manually and then committed.
-        
-7.    One can remove a branch by issuing
-    
-       'git branch -d < branch name> .....<branch name>
+common file is removed from one branch and another branch
+keeps it (and may be modified also) can lead to conflicts
+on merging and has to be modified manually and then committed.
+$SE
+
+$o15
+$SL
+7. !%One can remove a branch by issuing;
+$SE
+
+$f27
+       'git branch -d < branch name> .....<branch name>'
+$f24
+$o25
+
+$SP
       This will work only if branches to be deleted are merged with
-      current branch.
-      In case one needs to delete a branch unconditionally, issue
+current branch.
+In case one needs to delete a branch unconditionally, issue;
+$SE
+$o15
+$f27
         'git branch -D <branch-name>'
+$f24
 
-8.   git cloning
+$SL
+8. !%git cloning
+$SE
+$SP
      Cloning is making exact copy of a repository from a remote or
-     another local repository.
-     This a way of collaborating work or can be even a branching out.
-     It can be as issued as follows
+another local repository.
+This a way of collaborating work or can be even a branching out.
+It can be as issued as follows
+$SE
+
+$f27
       'git clone <remote> <local_folder>'
+$f24
        or
+$f27
        'git clone <path to git repo> <local_folder>
+$f24
+
+$SP
      Now the new user can modify the repo and commit it.
-     Any stage original repo can get the modifications of the
-     new repository by issuing;
-       'git pull <new_repo>'
+Any stage original repo can get the modifications of the
+new repository by issuing;
+$SE
+
+       !f27'git pull <new_repo>'!f24
+$o25
+$SB
      The modifications of the new repo will be fetched and merged
-     with currently active branch of the original. However it
-     there are conflicts manual modifications may be required.
-     
+with currently active branch of the original. However it
+there are conflicts manual modifications may be required.
+
+$SB
      Another option just to check the modification of the new
-     by the old is to fetch the new. ie;
-      'git fetch <new>'
+by the old is to fetch the new. ie;
+$l
+      !f27'git fetch <new>'!f24
      and one can check the modifications by issuing
-       'git log -p HEAD..FETCH_HEAD'
-9.   There is a concept of 'remote repository' which can be in the same
-     machine, another machine in local network or a cloud repository.
-     For transaction between local and remote one can use 'ssh' or 'https',
-     which git decides using the url.
-     One can have more than one remote repository.
-     If the need is to create a 'remote' in local network (ie same
-     machine or another machine in the local network) one may follow the
-     steps below.
+       !f27'git log -p HEAD..FETCH_HEAD'!f24
 
-     a. Create a new account for git admin in that machine, it may
-        an existing account also.
-     b. login in to that machine  and create a new folder with
-        a meaningful name connecting the repository.
+$o15
+$SL
+9. !%There is a concept of 'remote repository' which can be in the same
+machine, another machine in local network or a cloud repository.
+For transaction between local and remote one can use 'ssh' or 'https',
+which git decides using the url.
+One can have more than one remote repository.
+If the need is to create a 'remote' in local network (ie same
+machine or another machine in the local network) one may follow the
+steps below.
+$SE
 
-     c. go to the new folder and issue;
-         'git init --bare'
-     d. you may create the 'ssh' setting as explained earlier so
-        that batch ssh possible.
-     c. come back to the original machine and move to the
-        git folder of interest. Make sure that one can ssh to
-        the 'remote'.
+$o25
+$SL
+     a. !%Create a new account for git admin in that machine, it may
+an existing account also.
+$SE
+$SL
+     b. !%login in to that machine  and create a new folder with
+a meaningful name connecting the repository.
+$SE
+$SL
+     c. !%go to the new folder and issue;
+$SE
+         !f27'git init --bare'!f24
+$SL
+     d. !%One may create the 'ssh' setting as explained earlier so
+that batch ssh possible.
+$SE
+$SL
+     e. !%come back to the original machine and move to the
+git folder of interest. Make sure that one can ssh to
+the 'remote'.
+$SE
         Now issue;
-          git remote add <remote_name> <remote_url>
-          eg.  git remote add origin git@192.168.1.20:myrepo
+          !f27git remote add <remote_name> <remote_url>!f24
+          eg.  !f27git remote add origin git@192.168.1.20:myrepo!f24
                   or
-               git remote add gitorigin git@machine.name:myrepo
+               !f27git remote add gitorigin git@machine.name:myrepo!f24
         again issue;
-          git push -u <remote_name> master
- 
+          !f27git push -u <remote_name> master!f24
+
+$SB
         Cloud machines eg github.com, sourceforge.com etc provide
-        web interface to create  a new account, set up ssh/https etc
-        and initialize a new repository. Also they explain commands
-        to be issued locally which are very much similar as above.
-      
+web interface to create  a new account, set up ssh/https etc
+and initialize a new repository. Also they explain commands
+to be issued locally which are very much similar as above.
+$SE
+$SB
         Any time the local version is modified, remote can be synced with
-        local with push.
- 
+local with push.
+$SE
+
+$SB
         Others who need a copy of the repository can clone it.
-         
-        ie ; git clone <remote_url>
+$SE
 
+        ie ; !f27git clone <remote_url>!f24
+
+$SB
         if the remote is updated and local needs to sync with remote
-       
-           git pull <remote_url>
+$SE
 
+           !f27git pull <remote_url>!f24
+$o10
+
+$SB
 These are basic set of commands and there are more commands and options.
+$SE
 
-ABOUT DOCKER
+$SH2 l
+3.2 A Case Study
+$SE
+   (to be written)
+$P
+$SH3 l
+4. ABOUT DOCKER
+$SE
 
+$SP
    In a sense docker is a packing method like tar, rpm ,deb etc.
+$SE
+   (to be written)
