@@ -225,6 +225,11 @@ $SL
 using !f27'git checkout <branch name>'!f24.
 $SE
 
+$l
+   One always check current branch and other branches by;
+      !f27'git branch'!f24
+
+
 
 $SL
 6. !%One can merge a branch to current branch using
@@ -390,11 +395,17 @@ $SE
 
            !f27git pull <remote_url>!f24
 $o10
+$SP
+One can check remote braches by issuing;
+$SE
+
+           !f27'git remote -v show'!f24
 
 $SP
-Though it is possible for different users (if allowed) can push their
-branches to a remote, it can also lead to conflicts and may need to
-resolve it before pushing. This can be done by issuing a pull request, and care
+Though it is possible for different users (if allowed) to push their
+branches to a remote, it may also lead to conflicts. If such conflicts
+occure it  may need to be
+resolved  before pushing. This can be done by issuing a pull request, and care
 should be taken in such cases.
 $SE
 
