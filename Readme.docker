@@ -79,7 +79,8 @@ $SE
 
 $SP
 To ssh/scp in batch mode (ie without password prompt), following
-steps are required.
+steps are required.(This is only possible if the remote is configured
+to support this authentication.)
 
 $SL
 !%1. .ssh directory in $(HOME). It should not have write permission
