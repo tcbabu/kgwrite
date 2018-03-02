@@ -227,10 +227,8 @@ using !f27'git checkout <branch name>'!f24.
 $SE
 
 $l
-   One always check current branch and other branches by;
+   Currently active branch and other branches can be seen by;
       !f27'git branch'!f24
-
-
 
 $SL
 6. !%One can merge a branch to current branch using
@@ -397,7 +395,7 @@ $SE
            !f27git pull <remote_url>!f24
 $o10
 $SP
-One can check remote braches by issuing;
+One can check the remotes by issuing;
 $SE
 
            !f27'git remote -v show'!f24
