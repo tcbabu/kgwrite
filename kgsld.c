@@ -815,7 +815,6 @@ static int strchars(char *title) {
 		break;
 	    case 'c':
 		i += 2;
-//                         t_txt_font((int)val);
 		/*gj = gj-2; */
 		break;
 	    case 'z':

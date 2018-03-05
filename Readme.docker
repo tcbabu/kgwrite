@@ -89,15 +89,19 @@ $SE
 $l
 ie;
 $f27
+$tc01
    cd ~
    mkdir .ssh
    chmod 755 .ssh
+$tc15
 $f24
 
 Now under .ssh, run
 
 $f27
+$tc01
    ssh-keygen -t rsa
+$tc15
 $f24
 
 $SP
@@ -116,31 +120,31 @@ $SL
 other than extra ordinary situations. Only the owner should
 have permissions on this.
 $SE
-      ie it must be !f27'chmod 600 id_rsa'!f24.
+      ie it must be !c01!f27'chmod 600 id_rsa'!c15!f24.
 $SL
   2. !%id_rsa.pub the public key which can be shared with others
 but must have  only read permissions to others.
 $SE
-     ie !f27'chmod 644 id_rsa.pub'!f24
+     ie !c01!f27'chmod 644 id_rsa.pub'!c15!f24
 $o10
 
 $SP
   The third file of importance is 'authorized_keys' which also must
 only have read permissions for others.
-ie !f27'chmod 644 authorized_keys'!f24. This file is a collection of
+ie !c01!f27'chmod 644 authorized_keys'!c15!f24. This file is a collection of
 public keys of others who are allowed to login to the user/machine.
 One can certainly add own public key to this file so it is possible to
 ssh to own machine/account.
 $SE
 $l
-  ie !f27'cat id_rsa.pub >> authorized_keys'.!f24
+  ie !c01!f27'cat id_rsa.pub >> authorized_keys'.!c15!f24
 $SP
   One can add  public keys of others/machines like this to allow logins
 from other users/machines to the account in the machine.
 Always remember about the permissions on the files.
 $SP
   Forth file is known_hosts. Initially one can just touch it.
-It must also be !f27' touch known_hosts;chmod 644 known_hosts'.!f24
+It must also be !c01!f27' touch known_hosts;chmod 644 known_hosts'.!c15!f24
 'known_hosts' will get build up on making ssh to other
 user/machine.
 $SP
@@ -169,8 +173,10 @@ may need to issue the following setup.
 $SE
 
 $f27
+$tc01
   git config --global user.name "Your user name"
   git config --global user.emal "your email"
+$tc15
 $f24
 
 $SP
@@ -185,54 +191,54 @@ project related files.
 $SE
 $SL
 2. !%Go to the directory and issue
-!f27git init!f24
+!c01!f27git init!c15!f24
 $SL
 3. !%git got a concept of 'branches' to maintain different versions or
 stages of a project. The default branch is 'master'. There are ways
 to create new branches, delete branches, merge branches. With
-!f27'git init'!f24 one created by default the 'master' branch and by default moved to
+!c01!f27'git init'!c15!f24 one created by default the 'master' branch and by default moved to
 that branch.
 $SE
 $o25
 $SB
     The next step is adding files and folders to the repository.
-!f27'git add <file>/<folder> <file> ....' !f24will add files/folders
+!c01!f27'git add <file>/<folder> <file> ....' !c15!f24will add files/folders
 to the the current branch, ie to begin with 'master'.
 If everything needs to be added one can use;
-!f27'git add .'!f24
+!c01!f27'git add .'!c15!f24
 $SE
 $o15
 
 $SL
 4. !%Adding alone is not sufficient, one need to commit it.
-ie , !f27'git commit -a -m "<info string>"!f24.
+ie , !c01!f27'git commit -a -m "<info string>"!c15!f24.
 '-a' flag is to commit all changes made to the files in the
 repository. If you don't do this the changes will not be
 reflected. If one has created new files/folders it will not
 be reflected in the repository unless it is explicitly added
-using !f27' git add ...'!f24 and the commit it using
-!f27'git commit....'!f24
+using !c01!f27' git add ...'!c15!f24 and the commit it using
+!c01!f27'git commit....'!c15!f24
 $SE
 
 $SB
      The reverse of add is
 
 $l
-      !f27'git rm <file> .... <file>'!f24
+      !c01!f27'git rm <file> .... <file>'!c15!f24
 
 $SL
 5. !%One can create new branch using
-!f27' git branch <branch name>'!f24 and can be moved to desired branch
-using !f27'git checkout <branch name>'!f24.
+!c01!f27' git branch <branch name>'!c15!f24 and can be moved to desired branch
+using !c01!f27'git checkout <branch name>'!c15!f24.
 $SE
 
 $l
    Currently active branch and other branches can be seen by;
-      !f27'git branch'!f24
+      !c01!f27'git branch'!c15!f24
 
 $SL
 6. !%One can merge a branch to current branch using
-!f27'git merge <branch name>'!f24 . This will work if there
+!c01!f27'git merge <branch name>'!c15!f24 . This will work if there
 are no conflicts, for examples if  branches modified
 same file and committed then a conflict will arise and it has to
 be resolved manually.
@@ -241,7 +247,7 @@ using an editor.
 Once conflicts are resolved manually, it can be committed
 $SE
 
-       !f27'git commit -a -m "<commit message>"'!f24
+       !c01!f27'git commit -a -m "<commit message>"'!c15!f24
 
 $o25
 $SB
@@ -253,10 +259,12 @@ $SE
 $l
       eg.
 $f27
+$tc01
            git checkout master
            git merge branch1
            git merge branch2
 
+$tc15
 $f24
 $SP
       Now master will have both modifications in branch1 and branch2
@@ -276,7 +284,9 @@ $SL
 $SE
 
 $f27
+$tc01
        'git branch -d < branch name> .....<branch name>'
+$tc15
 $f24
 $o25
 
@@ -287,7 +297,9 @@ In case one needs to delete a branch unconditionally, issue;
 $SE
 $o15
 $f27
+$tc01
         'git branch -D <branch-name>'
+$tc15
 $f24
 
 $SL
@@ -301,11 +313,15 @@ It can be as issued as follows
 $SE
 
 $f27
+$tc01
       'git clone <remote> <local_folder>'
+$tc15
 $f24
        or
 $f27
+$tc01
        'git clone <path to git repo> <local_folder>
+$tc15
 $f24
 
 $SP
@@ -314,7 +330,7 @@ Any stage original repo can get the modifications of the
 new repository by issuing;
 $SE
 
-       !f27'git pull <new_repo>'!f24
+       !c01!f27'git pull <new_repo>'!c15!f24
 $o25
 $SB
      The modifications of the new repo will be fetched and merged
@@ -325,9 +341,9 @@ $SB
      Another option just to check the modification of the new
 by the old is to fetch the new. ie;
 $l
-      !f27'git fetch <new>'!f24
+      !c01!f27'git fetch <new>'!c15!f24
      and one can check the modifications by issuing
-       !f27'git log -p HEAD..FETCH_HEAD'!f24
+       !c01!f27'git log -p HEAD..FETCH_HEAD'!c15!f24
 
 $o15
 $SL
@@ -353,7 +369,7 @@ $SE
 $SL
      c. !%go to the new folder and issue;
 $SE
-         !f27'git init --bare'!f24
+         !c01!f27'git init --bare'!c15!f24
 $SL
      d. !%One may create the 'ssh' setting as explained earlier so
 that batch ssh possible.
@@ -364,13 +380,12 @@ git folder of interest. Make sure that one can ssh to
 the 'remote'.
 $SE
         Now issue;
-          !f27git remote add <remote_name> <remote_url>!f24
-          eg.  !f27git remote add origin git@192.168.1.20:myrepo!f24
+          !c01!f27git remote add <remote_name> <remote_url>!c15!f24
+          eg.  !c01!f27git remote add origin git@192.168.1.20:myrepo!c15!f24
                   or
-               !f27git remote add gitorigin git@machine.name:myrepo!f24
+               !c01!f27git remote add gitorigin git@machine.name:myrepo!c15!f24
         again issue;
-          !f27git push -u <remote_name> master!f24
-
+          !c01!f27git push -u <remote_name> master!c15!f24
 $SB
         Cloud machines eg github.com, sourceforge.com etc provide
 web interface to create  a new account, set up ssh/https etc
@@ -386,19 +401,19 @@ $SB
         Others who need a copy of the repository can clone it.
 $SE
 
-        ie ; !f27git clone <remote_url>!f24
+        ie ; !c01!f27git clone <remote_url>!c15!f24
 
 $SB
         if the remote is updated and local needs to sync with remote
 $SE
 
-           !f27git pull <remote_url>!f24
+           !c01!f27git pull <remote_url>!c15!f24
 $o10
 $SP
 One can check the remotes by issuing;
 $SE
 
-           !f27'git remote -v show'!f24
+           !c01!f27'git remote -v show'!c15!f24
 
 $SP
 Though it is possible for different users (if allowed) to push their
