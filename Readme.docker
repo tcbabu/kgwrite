@@ -433,7 +433,7 @@ $SH2 l
 $SE
 
 $SP
-   As a case study an old project  'kgwrite' is used. Kgwrite is a word processor
+   As a case study an old project  'kgwrite' was used. Kgwrite is a word processor
 of the type nroff/troff or Tex. One inserts commands in the text to instruct
 the actions and the processed output is generated in Postscript (or any supported image format)
 which can be 
@@ -441,9 +441,8 @@ converted to PDF using available tools (like ps2pdf).
 There are many word processors available now and the relevance of
 'kgwrite' is arguable. However it still has some relevance in
 the generation of automated documents.
-$SE
-Source of 'kgwrite' was under a folder 'kgwrite', and as a first step
-all unnecessary files are removed and ans made a !c01!f27make clean!c15!f24.
+Source of 'kgwrite' was under a folder 'kgwrite', and as the first step
+all unnecessary files are removed and and made a !c01!f27make clean!c15!f24.
 Then the following commands are issued;
 $SE
 $tc01
@@ -454,7 +453,7 @@ $f27
 $tc15
 $f24
 $SP
-As explained earlier created and set the $HOME/.ssh directory and logged into the
+As explained earlier, created and set the $HOME/.ssh directory and logged into the
 github.com account and created a new repository by name 'kgwrite'.
 Also added the ssh public key to github.com so that ssh to github.com was
 possible. Then the following commands are issued;
@@ -471,7 +470,7 @@ in the same machine by id 'abu', the present being 'babu'. I could have
 as well used another machine in the local network. I logged in as 'abu' and
 setup the 'ssh' as explained earlier. I also appended public key of 'babu'
 to 'authorized_keys' of 'abu', so that 'babu' can login to 'abu'
-without a password prompt. Also appended public key of 'abu' to 'authorized_keys' of 'babu', so that 'abu' also can login to 'babu' without a password. Now
+without a password prompt. Also appended public key of 'abu' to 'authorized_keys' of 'babu', so that 'abu' also can login to 'babu' without a password prompt. Now
 login as 'abu' and issued the following command to create a remote in local
 network.
 $SE
@@ -504,7 +503,7 @@ $SE
 $SP
 By this example there are two remoted and to users. Ofcourse 'thara' could have
 cloned from 'babu' also. They can also make pull requests from each other, or they
-can always deal though a remote, buy both using pull/push requests from 
+can always deal though a remote, by both using pull/push requests from 
 a common remote.
 $SE
 $P
