@@ -80,7 +80,8 @@ $SE
 $SP
 To ssh/scp in batch mode (ie without password prompt), following
 steps are required.(This is only possible if the remote is configured
-to support this authentication.)
+to support this authentication.Also it is just one method and other
+methods also exist.)
 
 $SL
 !%1. .ssh directory in $(HOME). It should not have write permission
@@ -430,7 +431,65 @@ $SE
 $SH2 l
 3.2 A Case Study
 $SE
-   (to be written)
+
+$SP
+   As a case study an old project  'kgwrite' is used. Kgwrite is a word processor
+of the type nroff/troff or Tex. One inserts commands in the text instruct
+the action and the processed output is generated in Postscript (or any supported image format)
+which can be 
+converted to PDF using available tools (like ps2pdf). 
+There are many word processors available now and the relevance of
+'kgwrite' is arguvable. However it still has some relevance in
+the generation of automated documents.
+$SE
+Source of 'kgwrite' was under a folder 'kgwrite', and as a first step
+all unnecessary files are removed and ans made a !c01!f27make clean!c15!f24.
+Then the flowwing commands are issued;
+$SE
+$tc01
+$f27
+   git init
+   git add .
+   git commit -m "First commit"
+$tc15
+$f24
+$SP
+As expained earlier setup the $HOME/.ssh directory and logged into the
+github.com account and creted a new repository by name 'kgwrite'.
+Also added the ssh public key to github.com so that ssh to github.com was
+possible. The the following commands are issued;
+$SE
+    !c01!f27git remote add sshgit git@github.com:tcbabu/kgwrite.git!c15!f24
+    !c01!f27git push -u sshgit master!c15!f24
+
+$SP
+Now I have created a remote repositiory of my project 'kgwrite' in
+github.com. And anybody can clone the project (since it is a public
+repository, otherwise other permissions are needed).I also thought of
+creating a remote in the local network. For this I used another account
+in the same machine by id 'abu', the present being 'babu'. I could have used
+as well used another machine in the local network. I logged in as 'abu' and
+setup the 'ssh' setup ad explained earlier. I also appended public key of 'babu'
+to 'authorized_keys' of 'abu', so that 'babu' can login to 'abu'
+without a password prompt. Also appended public key of 'abu' to 'authorized_keys' of 'babu', so that 'abu' also can login to 'babu' without a password. Now
+login as 'abu' and issued the following command to create a remote in local
+network.
+$SE
+    !c01!f27mkdir kgwrite;cd kgwrite!c15!f24
+    !c01!f27git init --bare!c15!f24
+
+$SP
+Now loged in as 'babu' and issued following commands;
+$SE
+    !c01!f27cd kgwrite!c15!f24
+    !c01!f27git remote add local abu@hplaptop:kgwrite!c15!f24
+    !c01!f27git push -u local master!c15!f24
+
+$SP
+Now two remotes are created one in the local network and other in github.com.
+I checked my remotes by issuing !c01!f27git remote -v show!c15!f24. Looking
+at the outputs I could verify my remotes.
+$SE
 $P
 $SH3 l
 4. ABOUT DOCKER
