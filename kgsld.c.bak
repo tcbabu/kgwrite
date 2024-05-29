@@ -30,7 +30,7 @@
 #include <fcntl.h>
 #include <math.h>
 #include <string.h>
-#include "kulina.h"
+#include <kulina.h>
 #define BLANK 31
 #define TX_CLR 15
 #define TX_FONT 0
@@ -103,13 +103,13 @@ static void scr_strlngth(char *line, float *xdsp);
 static char *buf=NULL, line[200];
 static char *Buf=NULL;
 static unsigned char tmenu[23] = { " Give text file name :" };
+int stripblnk(char *);
 
 #define MAX1 55
 #define MAX2 60
 #define FOREVER for(;;)
 #define Chk_Alloc(M) {\
  if(M==NULL) {\
-  normal();\
   printf("Error: In MALLOC...\n");\
   exit(0);\
  }\
@@ -121,7 +121,7 @@ static unsigned char tmenu[23] = { " Give text file name :" };
  if(fabs((y1)-(y2))<0.6) yy=y1; \
  drarrow(x1,y1,xx,yy,v);\
 }
-#define skip_blank while((buf[i]==' ')&&(i<max)) i++
+#define skip_blank while((buf[i]==' ')&&(i<max)) i++;
 #define copy_word {\
      if(i<max) line[lng++]=buf[i++];\
      while((i<max)&&(buf[i]>' ')&&(buf[i]!='#')&& \
@@ -132,7 +132,7 @@ static unsigned char tmenu[23] = { " Give text file name :" };
  }
 #define copy_non_word while((buf[i]!=' ')&&(i<max)&& \
                         ((buf[i]<'A')||((buf[i]>'Z')&&(buf[i]<'a')) \
-                          || (buf[i]>'z'))) line[lng++]=buf[i++]
+                          || (buf[i]>'z'))) line[lng++]=buf[i++];
 #define copy_block {\
         while((i<max)&& !((buf[i]=='\\')&&(buf[i+1]=='E'))) { \
                     if(lng<150) line[lng++]= buf[i++];\
@@ -141,7 +141,6 @@ static unsigned char tmenu[23] = { " Give text file name :" };
             line[lng++]=buf[i++]; \
     }
 #define check_limit if(lng==450) {\
-       normal();\
        printf(" Very long string...\n");\
        line[99]= '\0';\
        printf("%-s\n",line);\
@@ -149,9 +148,9 @@ static unsigned char tmenu[23] = { " Give text file name :" };
       }
 
 #define copy_punch
-#define copy_blanks while((buf[i]==' ')&&(i<max)) line[lng++]=buf[i++]
+#define copy_blanks while((buf[i]==' ')&&(i<max)) line[lng++]=buf[i++];
 #define Check_dist if(xdsp<0.) {\
-                     normal();printf(" Error : line width < 0");\
+                     printf(" Error : line width < 0");\
                      exit(0);}
 
 #define check_dolor if(line[0]=='$') fprintf(ot,"!g !b");
@@ -485,7 +484,7 @@ static unsigned char tmenu[23] = { " Give text file name :" };
       blinepos=-110.0,bheadpos=-115.5;\
       pagepos=theadpos;\
       pgnum=0;\
-      pgofs=0;Finish=0;Od_Ev=0
+      pgofs=0;Finish=0;Od_Ev=0;
 #define Set_Strings \
  switch (Od_Ev) \
  {\
@@ -815,7 +814,6 @@ static int strchars(char *title) {
 		break;
 	    case 'c':
 		i += 2;
-//                         t_txt_font((int)val);
 		/*gj = gj-2; */
 		break;
 	    case 'z':
@@ -1458,7 +1456,6 @@ static T_L *get_tbl(int *n_lines, int *h_end, File * fp) {
 
     first_adr = (T_L *) malloc(sizeof(T_L));
     if (first_adr == NULL) {
-	normal();
 	printf(" Error : Im mem allocation\n");
 	exit(0);
     }
@@ -1536,7 +1533,6 @@ static T_L *get_tbl(int *n_lines, int *h_end, File * fp) {
 	    } else {
 		new_adr = (T_L *) malloc(sizeof(T_L));
 		if (new_adr == NULL) {
-		    normal();
 		    printf(" Error : In mem allocation\n");
 		    exit(0);
 		}
@@ -1551,7 +1547,6 @@ static T_L *get_tbl(int *n_lines, int *h_end, File * fp) {
 		}
 		pt->buf[j + 1] = '\0';
 		if (i > 200) {
-		    normal();
 		    printf(" Error: too many lines in table...\n");
 		    exit(0);
 		}
@@ -1868,7 +1863,6 @@ static void check_never_end(char *l, float lnlng) {
     float dist;
     dist = kgStringLength(Img, l);
     if (dist > lnlng) {
-	normal();
 	printf(" Very long word...\n");
 	printf(" %s \n", l);
 	exit(0);
@@ -2120,7 +2114,6 @@ static int copy_token(char *buf, char *d) {
 	    *(d + i++) = ' ';
     else {
 	if (buf[i] != '/') {
-	    normal();
 	    printf("Refenece name more than 5 chars..\n");
 	    buf[6] = '\0';
 	    printf("%s...\n", buf);
@@ -2165,7 +2158,6 @@ process_r_note(char *bf, int last, int rmg, char *name, int *NOTE) {
 	    case '\\':
 		break;
 	    default:
-		normal();
 		printf(" Wrong string in reference\n");
 		buf[30] = '\0';
 		printf("$s...\n", buf);
@@ -2179,7 +2171,6 @@ process_r_note(char *bf, int last, int rmg, char *name, int *NOTE) {
     if (i < 1)
 	return (0);
     if (buf[0] != '/') {
-	normal();
 	printf("Reference name not given\n");
 	buf[20] = '\0';
 	printf("%s......\n", buf);
@@ -2187,7 +2178,6 @@ process_r_note(char *bf, int last, int rmg, char *name, int *NOTE) {
     }
     R_str = (R_B *) malloc(sizeof(R_B));
     if (R_str == NULL) {
-	normal();
 	printf("Error: In /Ref/ .. Memory Allocation..\n");
 	exit(0);
     }
@@ -2203,7 +2193,6 @@ process_r_note(char *bf, int last, int rmg, char *name, int *NOTE) {
     i = copy_token(buf + 1, R_str->token);
     ot = fopen(flname, "w");
     if (ot == NULL) {
-	normal();
 	printf("Error: In /Ref/ .. Opening FIle..\n");
 	exit(0);
     }
@@ -2225,7 +2214,6 @@ process_r_note(char *bf, int last, int rmg, char *name, int *NOTE) {
 	lngmax = max;
     lnlng = rmg - ofs;
     if (lnlng < 40.0) {
-	normal();
 	printf(" Error: line width too narrow..\n");
 	exit(0);
     }
@@ -2610,7 +2598,6 @@ static void mklist(File * fp, FILE * ot, int ofs, int rmg, float width) {
 	lngmax = max;
     lnlng = rmg - ofs;
     if (lnlng < 40.0) {
-	normal();
 	printf(" Error: line width too narrow..\n");
 	exit(0);
     }
@@ -2964,7 +2951,6 @@ static void storetextsetting(char *txt) {
     default:
 	remove(Z_DU_ZZ);
 	remove(TEMP_FILE);
-	normal();
 	printf(" Wrong code: %c \n", txt[1]);
 	exit(0);
     }
@@ -3005,7 +2991,6 @@ static void settextsetting(char *txt) {
     default:
 	remove(Z_DU_ZZ);
 	remove(TEMP_FILE);
-	normal();
 	printf(" Wrong code: %c \n", txt[1]);
 	exit(0);
     }
@@ -3095,7 +3080,7 @@ static void read_txt(char *flname, float ofs, float yy) {
   l1:
     stripblnk((char *) flname);
     f15 = fopen(flname, "r");
-    if (f15 == NULL) {		/*normal(); printf("Error:\n"); */
+    if (f15 == NULL) {		/* printf("Error:\n"); */
 	goto l1100;
     };
     space = 2.0;
@@ -3470,7 +3455,6 @@ static int get_ref(char *buf, char *token) {
     R_B *pt;
     pt = First_ref;
     if (pt == NULL) {
-	normal();
 	printf("Ref. not given..\n");
 	*(buf + 10) = '\0';
 	printf("%s...\n", buf);
@@ -3478,7 +3462,6 @@ static int get_ref(char *buf, char *token) {
     }
     j = 0;
     if (buf[j] != '/') {
-	normal();
 	printf("Wrong Ref...\n");
 	*(buf + 30) = '\0';
 	printf("%s...\n", buf);
@@ -3489,7 +3472,6 @@ static int get_ref(char *buf, char *token) {
 	token[k++] = buf[j++];
     }
     if (buf[j] != '/') {
-	normal();
 	printf("Wrong Ref...\n");
 	*(buf + 30) = '\0';
 	printf("%s...\n", buf);
@@ -3516,7 +3498,6 @@ static int get_ref(char *buf, char *token) {
 	    pt = (R_B *) pt->adr;
 	}
     }
-    normal();
     printf("Wrong Ref...\n");
     *(buf + 20) = '\0';
     printf("No such Ref: %s...\n", buf);
@@ -3603,7 +3584,6 @@ static void copy_refences(char *fl) {
 		    while (token[k] != '\0')
 			Buf[j++] = token[k++];
 		} else {
-		    normal();
 		    printf("Wrong #..\n");
 		    buf[10] = '\0';
 		    printf("%s...\n", buf);
