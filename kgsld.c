@@ -74,6 +74,7 @@
       
   static int txth , txtw;
   static int txtg , ifac = 24;
+  static int SpFac = 24,Font=0,TxtClr=TX_CLR;
   long tpattern = 15 , tfill = 1 , tbodr = 1 , tbkgr , tfnt = 0 , tcolor = TX_CLR , tbold = 1 , tangle = 0 , tslant = 0 , tuline = 0;
       
   static long ipattern , ifill , ibodr , ibkgr , ifnt , icolor , ibold , iangle , islant , iuline;
@@ -251,8 +252,12 @@
       { \
           case 'f':\
           tfnt = scanint ( ( char * ) & buf [ 2 ] ) ; \
+	  Font = tfnt; \
           kgTextFont ( Img , ( long ) tfnt ) ;\
           break;\
+	  case 't':\
+          if(buf[2]=='c') TxtClr =scanint ( ( char * ) & buf [ 3 ] ) ; \
+	  break;\
           case 'o': \
           ofs = scanint ( ( char * ) & buf [ 2 ] ) ; \
           if ( L_mar > ofs ) L_mar = ofs; \
@@ -280,6 +285,7 @@
           break; \
           case 's': \
           isfac = scanint ( ( char * ) & buf [ 2 ] ) ; \
+	  SpFac = isfac; \
           break; \
           case 'h': \
           ihfac = scanint ( ( char * ) & buf [ 2 ] ) ; \
@@ -476,6 +482,12 @@
   pagepos = theadpos;\
   pgnum = 0;\
   pgofs = 0;Finish = 0;Od_Ev = 0;
+#define Reset_Defaults \
+  pglimit_bk = pglimit;\
+  ifac = 24; \
+  pagepos = theadpos;\
+  pgnum = 0;\
+  pgofs = 0;Finish = 0;Od_Ev = 0;
 #define Set_Strings \
   switch ( Od_Ev ) \
   {\
@@ -531,7 +543,7 @@
           if ( numpos == 5 ) numpos_d = 1;\
       } \
   }
-#define Default_state {\
+#define Default_state(f23) {\
   fprintf ( f23 , "$o%-d\n" , ( int ) ( ofsl*10+0.5 ) ) ;\
       fprintf ( f23 , "$m%-d\n" , rmgl ) ;\
       fprintf ( f23 , "$s%-d\n" , ifac ) ;\
@@ -563,7 +575,7 @@
               add_notes ( f23 , ftnotes , ( int ) ( Col_shft* ( col_num-1 ) ) ) ;\
               remove ( ftnotes ) ;\
               if ( col_num != Columns ) {\
-                  Default_state;\
+                  Default_state(f23);\
                   pglimit = pglimit_bk;\
               }\
           }\
@@ -737,6 +749,21 @@
       struct position *Pr;
       struct position *Nx;
   } G_K;
+int Write_State(FILE *fp) {
+      fprintf ( fp , "$s%-d\n" , ifac ) ;
+      fprintf ( fp , "$f%1d\n" , ifnt ) ;
+      fprintf ( fp , "$i%1d\n" , islant ) ;
+      fprintf ( fp , "$U%1d\n" , iuline ) ;
+      fprintf ( fp , "$tp%2.2d\n" , ipattern ) ;
+      fprintf ( fp , "$td%1d\n" , ibodr ) ;
+      fprintf ( fp , "$tb%1d\n" , ibold ) ;
+      fprintf ( fp , "$tk%1d\n" , ibkgr ) ;
+      fprintf ( fp , "$tf%1d\n" , ifill ) ;
+      fprintf ( fp , "$tc%1d\n" , icolor ) ;
+      fprintf ( fp , "$h%-d\n$w%-d\n$g%-d\n"
+       , txth , txtw , txtg ) ;
+	return 1;
+}
   static int strchars ( char *title ) {
       float gj;
       int ngp , n , i , j , k;
@@ -2729,6 +2756,7 @@
           break;
           case 'c':
           icolor = scanint ( ++txt ) ;
+	  TxtClr = icolor;
           break;
           case 'k':
           ibkgr = scanint ( ++txt ) ;
@@ -2765,6 +2793,7 @@
           break;
           case 'c':
           tcolor = scanint ( ++txt ) ;
+	  TxtClr = tcolor;
           kgTextColor ( Img , tcolor ) ;
           break;
           case 'k':
@@ -3449,7 +3478,12 @@
       float Brk_pt;
       int NewPage = 0;
       cfile = fopen ( Contents , "w" ) ;
+//      Write_State(cfile);
       fprintf ( cfile , "$NBm\n$Nr\n" ) ;
+      fprintf ( cfile , "$s%-d\n",SpFac);
+      fprintf ( cfile , "$f%-d\n",Font);
+      fprintf ( cfile , "$tc%-d\n",TxtClr);
+      fprintf ( cfile , "$LE275\n");
       fprintf ( cfile , "$C1\n$c\n$g5\n!z32CONTENTS\n\n$l\n$g1\n" ) ;
       Set_Defaults;
       f22 = fopen ( DUMM_FIL , "r" ) ;
@@ -3635,6 +3669,7 @@
       fclose ( f22 ) ;
       fprintf ( cfile , "$P\n$h12\n$w12\n$s24\n$o350\n$Nn\n$Ns\n" ) ;
       fclose ( cfile ) ;
+      Dwritefile(Dreadfile(Contents),"Contents");
       if ( Con_file == 0 ) remove ( Contents ) ;
       return;
   }
@@ -3779,6 +3814,13 @@
           int NewPage = 0;
           kgTextSize ( Img , th , tw , tg ) ;
           preprocess ( f21 ) ;
+	  /*
+	   * Need a relook on the following line
+	   * to check whether everything need to
+	   * be re initialized
+	  */
+//          Reset_Defaults;
+          ifac = 24;
           pgnum = 0;
           pgofs = 0;
           f22 = fopen ( Z_DU_ZZ , "r" ) ;
@@ -3802,7 +3844,7 @@
           Foot_note = 0;
           if ( np < stpage ) iskip = 1;
 	/*fprintf(f23,"\n\n\n\n"); */
-          Default_state;
+          Default_state(f23);
           if ( Bk_gr ) {
               fprintf ( f23 , "$RS%-s\n" , B_file ) ;
           }
