@@ -74,7 +74,7 @@
       
   static int txth , txtw;
   static int txtg , ifac = 24;
-  static int SpFac = 24,Font=0,TxtClr=TX_CLR;
+  static int SpFac = 24,Font=0,TxtClr=TX_CLR,TxtW=16;;
   long tpattern = 15 , tfill = 1 , tbodr = 1 , tbkgr , tfnt = 0 , tcolor = TX_CLR , tbold = 1 , tangle = 0 , tslant = 0 , tuline = 0;
       
   static long ipattern , ifill , ibodr , ibkgr , ifnt , icolor , ibold , iangle , islant , iuline;
@@ -294,6 +294,7 @@
           break; \
           case 'w': \
           iwfac = scanint ( ( char * ) & buf [ 2 ] ) ; \
+	  TxtW = iwfac;\
           wfac = ( ( float ) iwfac ) /12.0; \
           kgTextSize ( Img , th*hfac , tw*wfac , tg*gfac ) ; \
           width = ( tw*wfac+tg*gfac ) ; \
@@ -567,7 +568,8 @@
   if ( pl > pglimit ) {\
           NewPage = 1;\
           if ( Foot_note ) {\
-              fprintf ( f23 , "$f0\n$U0\n$p1\n$h12\n$w\n$i0\n$n\n" ) ;\
+              fprintf ( f23 , "$f0\n$U0\n$p1\n$h14\n$w14\n$i0\n$n\n" ) ;\
+	      fprintf(f23,"$g1\n$a\n");\
               fprintf ( f23 , "$GC\n$GL%-d -3 %-d -3\n" , \
                ( int ) L_mar+Col_shft* ( col_num-1 ) , ( int ) L_mar+70+\
               Col_shft* ( col_num-1 ) ) ;\
@@ -1815,10 +1817,11 @@ int Write_State(FILE *fp) {
       int pofs , ofchrs = 3 , ofs , eql = 1;
       int ch , i = 0 , max , max0 , lng , lngmax , entry = 0 , oldi , oldlng , j , k;
           
-      float lnlng , xdsp , oldxdsp , dsp , width;
+      float lnlng , xdsp , oldxdsp , dsp , width,Fac;
       width = tw * 0.75 + tg;
       buf = bf;
       Lines = 0;
+      Fac = 10.0/TxtW;
       *NOTE += 1;
       sprintf ( flname , "%-s_Note.%-3.3d\0" , name , *NOTE ) ;
       while ( ( eql != 0 ) && ( i < last ) ) {
@@ -1884,7 +1887,7 @@ int Write_State(FILE *fp) {
           fprintf ( ot , "\n" ) ;
           return ( 0 ) ;
       };
-      fprintf ( ot , "$o0\n$a\n" ) ;
+      fprintf ( ot , "$o0\n$l\n" ) ;
       while ( ( xdsp < ( lnlng ) ) && ( i < max ) ) {
           oldi = i;
           oldlng = lng;
@@ -1903,7 +1906,7 @@ int Write_State(FILE *fp) {
               break;
           }
           line [ lng ] = '\0';
-          xdsp = kgStringLength ( Img , line ) ;
+          xdsp = kgStringLength ( Img , line )*Fac ;
       }
       if ( xdsp > ( lnlng * 1.01 ) ) check_too_much;
       lngmax = MAX2;
@@ -1924,11 +1927,11 @@ int Write_State(FILE *fp) {
                   no_advance;
                   check_dolor;
                   for ( j = 0; j < i; j++ ) putc ( line [ j ] , ot ) ;
-                  fprintf ( ot , "\n$a\n" ) ;
+                  fprintf ( ot , "\n$l\n" ) ;
                   ch = line [ i ] ;
                   line [ i ] = '\0';
                   ofchrs = strchars ( line ) + 1;
-                  dsp = kgStringLength ( Img , line ) ;
+                  dsp = kgStringLength ( Img , line )*Fac ;
                   line [ i ] = ch;
                   i += 2;
                   pofs = width * ofchrs + 0.5;
@@ -1968,7 +1971,7 @@ int Write_State(FILE *fp) {
                   break;
               }
               line [ lng ] = '\0';
-              xdsp = kgStringLength ( Img , line ) ;
+              xdsp = kgStringLength ( Img , line )*Fac ;
               Check_dist;
           }
           if ( ( xdsp > ( lnlng * 1.01 ) ) && ( lng != oldlng ) ) {
@@ -2632,7 +2635,7 @@ int Write_State(FILE *fp) {
       if ( in == NULL ) return;
       lmar = L_mar + Shft;
       ofs1 = lmar;
-      fprintf ( ot , "$h10\n$w10\n$s18\n" ) ;
+      fprintf ( ot , "$h12\n$w12\n$s18\n$a\n" ) ;
       fprintf ( ot , "\n$o%-d\n" , ( int ) ( lmar * 10 + 0.5 ) ) ;
       while ( fgets ( buf , bytes , in ) != NULL ) {
           if ( buf [ 0 ] == '$' ) {
@@ -2715,6 +2718,7 @@ int Write_State(FILE *fp) {
               break;
               case 'w':
               w = scanint ( buf + 2 ) ;
+	      TxtW = w;
               break;
               case 'g':
               g = scanint ( buf + 2 ) ;
@@ -2939,6 +2943,7 @@ int Write_State(FILE *fp) {
                   break;
                   case 'w':
                   ifac = scanint ( ( char * ) & txt [ 2 ] ) ;
+	          TxtW = ifac;
                   wfac = ( ( float ) ifac ) / 12.0;
                   break;
                   case 'g':
@@ -3947,6 +3952,7 @@ int Write_State(FILE *fp) {
                   break;
                   case 'w':
                   txtw = scanint ( ( char * ) & ln [ 2 ] ) ;
+		  TxtW = txtw;
                   break;
                   case 'g':
                   txtg = scanint ( ( char * ) & ln [ 2 ] ) ;
@@ -4100,7 +4106,7 @@ int Write_State(FILE *fp) {
           }
           goto l100;
           l150:
-          fprintf ( f23 , "$f0\n$U0\n$p1\n$h12\n$w\n$i0\n$n\n" ) ;
+          fprintf ( f23 , "$f0\n$U0\n$p1\n$h12\n$w12\n$i0\n$n\n" ) ;
           if ( Foot_note ) {
               fprintf ( f23 , "$GC\n$GL%-d -3 %-d -3\n" , ( int ) L_mar + Col_shft * 
                   ( col_num - 1 ) , ( int ) L_mar + 70 + Col_shft * ( col_num - 1 ) ) ;
